@@ -16,8 +16,10 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-    - name: Display the path
-      run: |
-        import os
-        print(os.environ['PATH'])
-      shell: python 
+    - name: install dependencies
+      run: npm install
+    - name : Autograde Testing
+      run: npm run test -- --verbose 2>&1 | tee test.log
+    - name : Show log file
+      run: cat test.log
+    - uses: masaditya/test-autograde@v10.0
